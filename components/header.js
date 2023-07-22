@@ -1,6 +1,6 @@
-import render_main_content from "../controllers/home.js"
-import render_dice_content from "../controllers/dices.js"
-import items_factory from "../controllers/items.js"
+import render_main_content from "controllers/home.js"
+import render_dice_content from "controllers/dices.js"
+import items_factory from "controllers/items.js"
 
 function render_header(home, itens, notes, dices, conf){
     header.innerHTML = `
