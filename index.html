@@ -16,6 +16,8 @@
     <div id="main_content" class="container"></div>
 
     <div id="items_content" class="text-light d-flex flex-wrap"></div>
+
+    <div id="modais" class="container"></div>
     
 </body>
 
@@ -24,6 +26,7 @@
 <script src="components/header.js" type="module"></script>
 <script type="module">
     import set_local from "./components/header.js"
+    import items_factory from "./controllers/items.js"
 
     set_local("ac");
 
@@ -34,6 +37,71 @@
             document.location.reload();
         })
     })
+
+    //Items
+    let item = document.getElementById('add_item_button');
+    if(item != undefined){
+        item.addEventListener('click', () => {
+            let name = document.getElementById('item_name').value;
+
+            var select = document.getElementById('item_type');
+            let type = select.options[select.selectedIndex].text;
+            let desc = document.getElementById('item_desc').value;
+            let quantity = document.getElementById('item_quantity').value;
+            let weight = document.getElementById('item_weight').value;
+
+            if(name == ""){
+                cad_items_errors.innerHTML += `<li>O item precisa de um nome</li>`
+            }
+            if(type == "Tipos"){
+                cad_items_errors.innerHTML += `<li>O item precisa de um tipo válido</li>`
+            }
+            if(quantity == ""){
+                cad_items_errors.innerHTML += `<li>O item precisa ter quantidade</li>`
+            }
+            if(weight == "" || weight == 0){
+                cad_items_errors.innerHTML += `<li>O item precisa ter um peso válido</li>`
+            }
+
+            if(cad_items_errors.innerHTML == ""){
+                items_factory.add([name, type, desc, quantity, weight])
+            }
+        })
+    }
+        
+        //filters
+        let search_name = document.getElementById('input_search_item_name');
+        let search_type = document.getElementById('select_search_item_type');
+
+        if(search_name != undefined){
+            var local_s_t = "";
+
+            search_name.addEventListener("keyup", () => {
+                local_s_t = search_type.options[search_type.selectedIndex].text;
+                if(local_s_t == "Tipos"){local_s_t = ""};
+                items_factory.show([search_name.value, local_s_t]);
+            })
+        }
+        if(search_type != undefined){
+            var local_s_t = "";
+
+            search_type.addEventListener("click", () => {
+                local_s_t = search_type.options[search_type.selectedIndex].text;
+                if(local_s_t == "Tipos"){local_s_t = ""};
+                items_factory.show([search_name.value, local_s_t]);
+            })
+        }
+
+        //remove
+        let remove_item = document.querySelectorAll('#remove_item');
+        console.log(remove_item)
+        remove_item.forEach((element) => {
+            element.addEventListener('click', () => {
+                var value = element.value;
+                items_factory.remove(value);
+            })
+        })
+
 </script>
 <script>
     //Func

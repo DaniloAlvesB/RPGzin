@@ -1,5 +1,6 @@
 import render_main_content from "../controllers/home.js"
 import render_dice_content from "../controllers/dices.js"
+// import items_factory from "../controllers/items.js"
 import items_factory from "../controllers/items.js"
 
 function render_header(home, itens, notes, dices, conf){
@@ -24,7 +25,7 @@ function render_header(home, itens, notes, dices, conf){
         </div>
     `
 }
-console.log(items_factory)
+
 function set_local(local){
 
     if(local == "ac"){
@@ -40,7 +41,7 @@ function set_local(local){
     }else if(local == "items"){
         localStorage.setItem("local", local);
         render_header("", "active", "", "", "");
-        items_factory.render;
+        items_factory.render();
 
     }else if(local == "notes"){
         localStorage.setItem("local", local);
