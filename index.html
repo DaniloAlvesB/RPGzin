@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPGzin</title>
+</head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<link rel="stylesheet" href="style.css">
+
+<body class="bg-dark">
+
+    <div id="header"></div>
+
+    <div id="main_content" class="container"></div>
+
+    <div id="items_content" class="text-light d-flex flex-wrap"></div>
+    
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+<script src="/components/header.js" type="module"></script>
+<script type="module">
+    import set_local from "/components/header.js"
+
+    set_local("ac");
+
+    var elements = document.querySelectorAll("#nav_bt");
+    elements.forEach((element) => {
+        element.addEventListener("click", () => {
+            set_local(element.value);
+            document.location.reload();
+        })
+    })
+</script>
+<script>
+    //Func
+    function alter_dice(number, times){
+        var n_times = document.getElementById(`times_${number}`);
+        var sum = document.getElementById(`sum_value+${number}`).value;
+        if(times > 0){
+            n_times.innerHTML = parseInt(n_times.innerHTML) + parseInt(times);
+        }else if(parseInt(n_times.innerHTML) > 1){
+            n_times.innerHTML = parseInt(n_times.innerHTML) + parseInt(times);
+        }
+    }
+    function clear_roll_log(){
+        log_dice_content.innerHTML = `
+            <div class="m-2 p-2 d-flex flex-row">
+                <h5 class="text-light mt-1">Histórico de dados</h5>
+                <button class="btn btn-danger mx-2" onclick="clear_roll_log()">Limpar</button>
+            </div>
+        `;
+    }
+    function roll_dice(number){
+        var n_times = document.getElementById(`times_${number}`);
+        var sum = document.getElementById(`sum_value+${number}`).value;
+        
+        //Data
+        var hoje = new Date()
+        var date = `${hoje.getDate().toString().padStart(2,'0')}/${(hoje.getMonth() + 1).toString().padStart(2,'0')}/${hoje.getFullYear()} | ${hoje.getHours()}:${hoje.getMinutes()}`
+
+        var result = [];
+        var show_result = "";
+        var final_result = 0;
+        for(var i = 0; i < parseInt(n_times.innerHTML); i++){
+            var temp = Math.floor(Math.random() * (number))+1
+            result += temp
+            show_result += `${temp}`
+            if(i < parseInt(n_times.innerHTML)-1){
+                show_result += `, `        
+            }
+            final_result += temp
+        }
+        log_dice_content.innerHTML += `<div class="text-date mx-2">${date}</div>`;
+        log_dice_content.innerHTML += `<div class="px-3"> - Dado lançado ${n_times.innerHTML}d${number} + ${sum} (${show_result}) | Resultado: <b>${final_result + parseFloat(sum)}</b></div>`;    }
+</script>
+
+</html>
